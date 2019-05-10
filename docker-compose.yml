@@ -1,0 +1,54 @@
+version: '3.7'
+
+services:
+  client:
+    image: in2code/httpd:2.4-alpine
+    volumes:
+      - ./client/:/app/:cached
+    environment:
+      WEB_SERVER_NAME: client.t3am.docker
+      WEB_PHP_SERVICE: client-php
+  client-php:
+    image: in2code/php:7.2-fpm
+    volumes:
+      - ./client/:/app/
+  client-mysql:
+    image: in2code/mysql:5.7
+    volumes:
+      - client-mysql:/var/lib/docker/:cached
+      - $HOME/.composer/auth.json:/tmp/composer/auth.json
+      - $HOME/.composer/cache/:/tmp/composer/cache/
+    environment:
+      MYSQL_DATABASE: client
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+      MYSQL_ROOT_PASSWORD: root
+
+  server:
+    image: in2code/httpd:2.4-alpine
+    volumes:
+      - ./server/:/app/:cached
+    links:
+      - server-php:php
+    environment:
+      WEB_SERVER_NAME: server.t3am.docker
+      WEB_PHP_SERVICE: server-php
+  server-php:
+    image: in2code/php:7.2-fpm
+    volumes:
+      - ./server/:/app/:cached
+      - $HOME/.composer/auth.json:/tmp/composer/auth.json
+      - $HOME/.composer/cache/:/tmp/composer/cache/
+  server-mysql:
+    image: in2code/mysql:5.7
+    volumes:
+      - server-mysql:/var/lib/docker/
+    environment:
+      MYSQL_DATABASE: server
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+      MYSQL_ROOT_PASSWORD: root
+
+volumes:
+  client-mysql:
+  server-mysql:

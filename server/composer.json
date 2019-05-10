@@ -1,0 +1,7 @@
+{
+    "require": {
+        "typo3/minimal": "^9.5",
+        "in2code/t3am_server": "@dev",
+        "typo3/cms-beuser": "^9.5"
+    }
+}
