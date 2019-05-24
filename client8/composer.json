@@ -1,0 +1,15 @@
+{
+    "require": {
+        "typo3/minimal": "^8.7",
+        "in2code/t3am": "@dev",
+        "typo3/cms-beuser": "^8.7"
+    },
+    "extra": {
+        "typo3/cms": {
+            "root-dir": "public",
+            "web-dir": "public",
+            "cms-package-dir": "{$vendor-dir}/typo3/cms"
+        },
+        "enable-patching": true
+    }
+}

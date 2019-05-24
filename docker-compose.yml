@@ -26,6 +26,31 @@ services:
       MYSQL_PASSWORD: dev
       MYSQL_ROOT_PASSWORD: root
 
+  client8:
+    image: in2code/httpd:2.4-alpine
+    volumes:
+      - ./client8/:/app/:cached
+      - client8-var:/app/var/:nocopy
+    environment:
+      WEB_SERVER_NAME: client.t3am.docker
+      WEB_PHP_SERVICE: client-php
+  client8-php:
+    image: in2code/php:7.2-fpm
+    volumes:
+      - ./client8/:/app/
+      - client8-var:/app/var/:nocopy
+  client8-mysql:
+    image: in2code/mysql:5.7
+    volumes:
+      - client-mysql:/var/lib/docker/:cached
+      - $HOME/.composer/auth.json:/tmp/composer/auth.json
+      - $HOME/.composer/cache/:/tmp/composer/cache/
+    environment:
+      MYSQL_DATABASE: client8
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+      MYSQL_ROOT_PASSWORD: root
+
   server:
     image: in2code/httpd:2.4-alpine
     volumes:
@@ -56,5 +81,7 @@ services:
 volumes:
   client-mysql:
   client-var:
+  client8-var:
+  client8-mysql:
   server-mysql:
   server-var:
