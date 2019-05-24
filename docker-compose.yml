@@ -5,6 +5,7 @@ services:
     image: in2code/httpd:2.4-alpine
     volumes:
       - ./client/:/app/:cached
+      - client-var:/app/var/:nocopy
     environment:
       WEB_SERVER_NAME: client.t3am.docker
       WEB_PHP_SERVICE: client-php
@@ -12,6 +13,7 @@ services:
     image: in2code/php:7.2-fpm
     volumes:
       - ./client/:/app/
+      - client-var:/app/var/:nocopy
   client-mysql:
     image: in2code/mysql:5.7
     volumes:
@@ -28,6 +30,7 @@ services:
     image: in2code/httpd:2.4-alpine
     volumes:
       - ./server/:/app/:cached
+      - server-var:/app/var/:nocopy
     links:
       - server-php:php
     environment:
@@ -37,6 +40,7 @@ services:
     image: in2code/php:7.2-fpm
     volumes:
       - ./server/:/app/:cached
+      - server-var:/app/var/:nocopy
       - $HOME/.composer/auth.json:/tmp/composer/auth.json
       - $HOME/.composer/cache/:/tmp/composer/cache/
   server-mysql:
@@ -51,4 +55,6 @@ services:
 
 volumes:
   client-mysql:
+  client-var:
   server-mysql:
+  server-var:

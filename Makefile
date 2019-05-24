@@ -24,5 +24,9 @@ cert:
 	if [ ! -d ~/.dinghy/certs ]; then mkdir -p ~/.dinghy/certs; fi
 	cd ~/.dinghy/certs; bash -c 'openssl req -x509 -newkey rsa:2048 -keyout t3am.docker -out t3am.docker -days 365 -nodes -subj "/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Org/CN=t3am.docker" -config <(cat /etc/ssl/openssl.cnf <(printf "[SAN]\nsubjectAltName=DNS:t3am.docker")) -reqexts SAN -extensions SAN'
 
+init-var:
+	docker-compose exec -u0 client-php chown -R app:app /app/var
+	docker-compose exec -u0 server-php chown -R app:app /app/var
+
 %:
 	@:
